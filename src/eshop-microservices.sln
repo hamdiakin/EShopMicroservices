@@ -1,0 +1,15 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{F53BE83F-3678-494A-9D1B-EEAD54A4B29B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{5B15A7E8-84E1-4CB7-ABD2-D5DDDB4C0F88}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5B15A7E8-84E1-4CB7-ABD2-D5DDDB4C0F88} = {F53BE83F-3678-494A-9D1B-EEAD54A4B29B}
+	EndGlobalSection
+EndGlobal
