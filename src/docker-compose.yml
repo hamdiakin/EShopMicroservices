@@ -1,6 +1,16 @@
 ﻿services:
-  catalog.api:
-    image: catalog.api
-    build:
-      context: .
-      dockerfile: Services/Catalog/Catalog.API/Dockerfile
+  catalogdb:
+    image: postgres:latest
+    container_name: catalogdb
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=CatalogDb
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data: 

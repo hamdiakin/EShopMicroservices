@@ -3,19 +3,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container
 builder.Services.AddCarter();
 
-// Add MediatR
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining(typeof(Program)));
 
-// Add Authorization
-// builder.Services.AddAuthorization();
+builder.Services.AddMarten(opts =>
+{
+    opts.Connection(builder.Configuration.GetConnectionString("CatalogConnection")!);
+}).UseLightweightSessions();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline
 app.MapCarter();
-
-// Add authorization middleware
-// app.UseAuthorization();
 
 // Add logging middleware
 app.Use(async (context, next) =>
