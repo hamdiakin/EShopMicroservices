@@ -1,19 +1,28 @@
+using BuildingBlocks.Exceptions.Handler;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container
-builder.Services.AddCarter();
+var assembly = typeof(Program).Assembly;
 
-builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining(typeof(Program)));
+// Add services to the container
+builder.Services.AddMediatR(config =>
+{
+    config.RegisterServicesFromAssemblyContaining(typeof(Program));
+    config.AddOpenBehavior(typeof(ValidationBehaviour<,>));
+});
+
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+
+builder.Services.AddCarter();
 
 builder.Services.AddMarten(opts =>
 {
     opts.Connection(builder.Configuration.GetConnectionString("CatalogConnection")!);
 }).UseLightweightSessions();
 
-var app = builder.Build();
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
-// Configure the HTTP request pipeline
-app.MapCarter();
+var app = builder.Build();
 
 // Add logging middleware
 app.Use(async (context, next) =>
@@ -22,5 +31,11 @@ app.Use(async (context, next) =>
     logger.LogInformation($"Request: {context.Request.Method} {context.Request.Path}");
     await next();
 });
+
+// Configure the HTTP request pipeline
+app.MapCarter();
+
+// Add exception handling middleware
+app.UseExceptionHandler(options => { });
 
 app.Run();
