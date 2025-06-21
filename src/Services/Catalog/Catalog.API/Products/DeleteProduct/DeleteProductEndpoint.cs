@@ -18,7 +18,7 @@ public class DeleteProductEndpoint : ICarterModule
                 return Results.Ok(response);
             }
 
-            return Results.BadRequest(new DeleteProductResponse(false, result.ErrorMessage));
+            return Results.BadRequest(new DeleteProductResponse(false));
         })
         .WithName("DeleteProduct")
         .Produces<DeleteProductResponse>(StatusCodes.Status200OK)

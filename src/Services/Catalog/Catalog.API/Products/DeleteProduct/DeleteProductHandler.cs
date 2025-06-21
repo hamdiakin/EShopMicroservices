@@ -2,8 +2,7 @@ namespace Catalog.API.Products.DeleteProduct;
 
 public record DeleteProductCommand(Guid ProductId) : ICommand<DeleteProductResult>;
 
-public record DeleteProductResult(bool IsSuccess, string ErrorMessage = "");
-
+public record DeleteProductResult(bool IsSuccess);
 
 public class DeleteProductCommandValidator : AbstractValidator<DeleteProductCommand>
 {
@@ -12,23 +11,21 @@ public class DeleteProductCommandValidator : AbstractValidator<DeleteProductComm
         RuleFor(x => x.ProductId).NotEmpty().WithMessage("Product ID is required.");
     }
 }
-internal class DeleteProductCommandHandler (IDocumentSession session, ILogger<DeleteProductCommandHandler> logger) : ICommandHandler<DeleteProductCommand, DeleteProductResult>
+
+internal class DeleteProductCommandHandler (IDocumentSession session) : ICommandHandler<DeleteProductCommand, DeleteProductResult>
 {
     public async Task<DeleteProductResult> Handle(DeleteProductCommand command, CancellationToken cancellationToken)
     {
-        logger.LogInformation("Handling DeleteProductCommand for ProductId: {ProductId}", command.ProductId);
-
         var product = await session.LoadAsync<Product>(command.ProductId, cancellationToken);
+        
         if (product == null)
         {
-            logger.LogWarning("Product with ID {ProductId} not found", command.ProductId);
-            return new DeleteProductResult(false, "Product not found");
+            throw new ProductNotFoundException(command.ProductId);
         }
-
+        
         session.Delete(product);
         await session.SaveChangesAsync(cancellationToken);
-
-        logger.LogInformation("Product with ID {ProductId} deleted successfully", command.ProductId);
+        
         return new DeleteProductResult(true);
     }
 }

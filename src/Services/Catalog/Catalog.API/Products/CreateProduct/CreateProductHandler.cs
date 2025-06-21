@@ -17,14 +17,10 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
     }
 }
 
-internal class CreateProductCommandHandler(IDocumentSession session, ILogger<CreateProductCommandHandler> logger)
-    : ICommandHandler<CreateProductCommand, CreateProductResult>
+internal class CreateProductHandler(IDocumentSession session) : ICommandHandler<CreateProductCommand, CreateProductResult>
 {
     public async Task<CreateProductResult> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
-        // Log the request
-        logger.LogInformation("Handling CreateProductCommand for product: {ProductName}", request.Name);
-        
         var product = new Product
         {
             Id = Guid.NewGuid(),
@@ -34,12 +30,12 @@ internal class CreateProductCommandHandler(IDocumentSession session, ILogger<Cre
             Image = request.Image,
             Price = request.Price
         };
-
-
+        
+        
         // save the product to the database
         session.Store(product);
         await session.SaveChangesAsync(cancellationToken);
-
+        
         return new CreateProductResult(product.Id);
     }
 }

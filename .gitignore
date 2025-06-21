@@ -58,9 +58,12 @@ dlldata.c
 BenchmarkDotNet.Artifacts/
 
 # .NET Core
+*.swp
+*.*~
 project.lock.json
-project.fragment.lock.json
-artifacts/
+.DS_Store
+*.pyc
+nupkg/
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
@@ -396,3 +399,26 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+*.iws
+*.ipr
+*.iml
+.idea_modules/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent

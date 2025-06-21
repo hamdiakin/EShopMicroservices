@@ -7,3 +7,4 @@ global using MediatR;
 global using Catalog.API.Exceptions;
 global using FluentValidation;
 global using BuildingBlocks.Behaviours;
+global using Marten.Pagination;
